@@ -1,1 +1,5 @@
+__pycache__/
+geckodriver.log
 settings.py
+*.jpg
+final.gif

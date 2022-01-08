@@ -1,46 +1,70 @@
 import time
+from subprocess import call
 
+import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from telegram.ext import Updater, CallbackContext
-from settings import URL, TOKEN
+from telegram.ext import CallbackContext, Updater
 
+from settings import TOKEN, URL
 
+# Initialize the webdriver
 firefox_options = Options()
 firefox_options.add_argument("--headless")
 browser = webdriver.Firefox(options=firefox_options)
-
-old_pic = None
 
 
 def get_link() -> str:
     global browser
 
     browser.get(URL)
-    time.sleep(5)
+    time.sleep(10)
     return browser.find_elements(By.TAG_NAME, "img")[0].get_attribute("src")
 
 
-def send_pic(context: CallbackContext):
-    global old_pic
+def save_pic(image_url: str, filename: str) -> None:
+    img_data = requests.get(image_url).content
+    with open(filename, 'wb') as handler:
+        handler.write(img_data)
 
-    pic = get_link()
-    
-    if old_pic != pic:
-        old_pic = pic 
-        context.bot.sendPhoto(
-            chat_id="@pkmn_twitter",
-            photo=pic
-        )
+
+def send_pic(context: CallbackContext):
+    with open('final.gif', 'rb') as gif:
+        context.bot.send_animation(chat_id="@pkmn_twitter", animation=gif)
+
+
+def bot_loop(context: CallbackContext):
+    counter = 0
+    old_pic = pic = get_link()
+    save_pic(pic, f"{counter}.jpg")
+
+    # Collect pics
+    while counter < 10:
+        pic = get_link()
+        if pic != old_pic:
+            counter += 1
+            old_pic = pic
+            save_pic(pic, f"{counter}.jpg")
+
+    # Make GIF
+    call(["convert", "-delay", "100", "-loop", "1", "*.jpg", "final.gif"])
+
+    # Send GIF to channel
+    send_pic(context)
+
 
 def main():
     print("Starting bot...")
     updater = Updater(TOKEN, use_context=True)
     job = updater.job_queue
-    job.run_repeating(send_pic, interval=15, first=0)
     updater.start_polling()
-    updater.idle()
+    while True:
+        job.run_once(bot_loop, 0)
+
+        if job.jobs():
+            time.sleep(160)
+
 
 if __name__ == "__main__":
     main()
