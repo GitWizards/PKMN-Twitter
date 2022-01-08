@@ -29,11 +29,6 @@ def save_pic(image_url: str, filename: str) -> None:
         handler.write(img_data)
 
 
-def send_pic(context: CallbackContext):
-    with open('final.gif', 'rb') as gif:
-        context.bot.send_animation(chat_id="@pkmn_twitter", animation=gif)
-
-
 def bot_loop(context: CallbackContext):
     counter = 0
     old_pic = pic = get_link()
@@ -51,7 +46,8 @@ def bot_loop(context: CallbackContext):
     call(["convert", "-delay", "100", "-loop", "1", "*.jpg", "final.gif"])
 
     # Send GIF to channel
-    send_pic(context)
+    with open('final.gif', 'rb') as gif:
+        context.bot.send_animation(chat_id="@pkmn_twitter", animation=gif)
 
 
 def main():
