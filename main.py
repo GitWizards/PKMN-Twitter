@@ -27,7 +27,7 @@ def bot_loop(context: CallbackContext):
         time.sleep(15)
 
     # Make GIF
-    call(["convert", "-delay", "100", "-loop", "1", "*.jpg", "final.gif"])
+    call(["convert", "-delay", "75", "-loop", "1", "*.jpg", "final.gif"])
 
     # Send GIF to channel
     with open('final.gif', 'rb') as gif:
