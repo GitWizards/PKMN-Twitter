@@ -24,7 +24,7 @@ def bot_loop(context: CallbackContext):
                 f.write(img_data)
                 counter += 1
 
-        time.sleep(15)
+        time.sleep(5)
 
     # Make GIF
     call(["convert", "-delay", "75", "-loop", "1", "*.jpg", "final.gif"])
