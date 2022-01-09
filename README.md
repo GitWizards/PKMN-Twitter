@@ -6,5 +6,6 @@ This bot pulls the profile picture every 10 seconds and merge them in a GIF, whi
 
 Links:
 
+* [Telegram channel](https://t.me/pkmn_twitter)
 * [Screenshakes profile](https://twitter.com/screenshakes)
 * [More info](https://twitter.com/screenshakes/status/1479497779537920001)
