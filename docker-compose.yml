@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  bot:
+    build: .
+    command: python main.py
+    volumes:
+      - .:/app/
+    restart: unless-stopped

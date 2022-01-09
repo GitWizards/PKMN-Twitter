@@ -37,13 +37,9 @@ def bot_loop(context: CallbackContext):
 def main():
     print("Starting bot...")
     updater = Updater(TOKEN, use_context=True)
-    job = updater.job_queue
+    updater.job_queue.run_repeating(bot_loop, interval=160, first=0)
     updater.start_polling()
-    while True:
-        job.run_once(bot_loop, 0)
-
-        if job.jobs():
-            time.sleep(160)
+    updater.idle()
 
 
 if __name__ == "__main__":
