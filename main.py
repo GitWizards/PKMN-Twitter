@@ -19,6 +19,7 @@ def bot_loop(context: CallbackContext):
         new_pic = hashlib.sha256(img_data).hexdigest()
 
         if old_pic != new_pic:
+            old_pic = new_pic
             with open(f"{counter}.jpg", 'wb') as f:
                 f.write(img_data)
                 counter += 1
