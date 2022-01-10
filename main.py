@@ -31,7 +31,7 @@ def bot_loop(context: CallbackContext):
 
         # Send GIF to channel
         with open('final.gif', 'rb') as gif:
-            context.bot.send_animation(chat_id="@radeox", animation=gif)
+            context.bot.send_animation(chat_id="@pkmn_twitter", animation=gif)
 
 
 def main():
