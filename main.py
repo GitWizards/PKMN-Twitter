@@ -15,8 +15,12 @@ def bot_loop(context: CallbackContext):
 
         # Collect pics
         while counter < 10:
-            img_data = requests.get(URL).content
-            new_pic_hash = hashlib.sha256(img_data).hexdigest()
+            try:
+                img_data = requests.get(URL).content
+                new_pic_hash = hashlib.sha256(img_data).hexdigest()
+            except Exception as e:
+                print(e)
+                new_pic_hash = "ERROR"
 
             if old_pic_hash != new_pic_hash:
                 old_pic_hash = new_pic_hash
